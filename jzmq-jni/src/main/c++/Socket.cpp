@@ -340,10 +340,10 @@ JNIEXPORT void JNICALL Java_org_zeromq_ZMQ_00024Socket_setLongSockopt (JNIEnv *e
     case ZMQ_AFFINITY:
     case ZMQ_RATE:
     case ZMQ_RECOVERY_IVL:
-    case ZMQ_ROUTER_HANDOVER:	
     case ZMQ_SNDBUF:
     case ZMQ_RCVBUF:
 #if ZMQ_VERSION >= ZMQ_MAKE_VERSION(4,1,0)
+    case ZMQ_ROUTER_HANDOVER:	
     case ZMQ_GSSAPI_SERVER:
     case ZMQ_GSSAPI_PLAINTEXT:
 #endif
