@@ -147,15 +147,11 @@ foreach (source ${cxx-sources})
 	list(APPEND sources ${CMAKE_CURRENT_SOURCE_DIR}/src/main/c++/${source})	
 endforeach()
 
-add_custom_command(
-	OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/config.hpp
-	COMMAND ${CMAKE_COMMAND}
-	ARGS	-E
-		copy
-		${CMAKE_CURRENT_SOURCE_DIR}/builds/msvc/config.hpp
-		${CMAKE_CURRENT_BINARY_DIR}/config.hpp
-	DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/builds/msvc/config.hpp
-)
+include(CheckIncludeFile)
+check_include_file("inttypes.h" HAVE_INTTYPES_H)
+check_include_file("stdint.h" HAVE_STDINT_H)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/config.hpp.in
+               ${CMAKE_CURRENT_BINARY_DIR}/config.hpp)
 list(APPEND sources ${CMAKE_CURRENT_BINARY_DIR}/config.hpp)
 
 add_custom_command(
@@ -200,14 +196,14 @@ list(APPEND sources lib/zmq.jar)
 # output
 
 add_library(jzmq SHARED ${sources})
-target_link_libraries(jzmq libzmq.lib)
+find_library(libzmq NAMES libzmq.lib libzmq.dll libzmq.a libzmq.so)
+target_link_libraries(jzmq ${libzmq})
 
 set(docs
     AUTHORS
 	COPYING
 	COPYING.LESSER
 	ChangeLog
-	INSTALL
 	NEWS
 	README
 	README-PERF
